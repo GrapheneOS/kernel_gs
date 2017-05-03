@@ -507,8 +507,9 @@ static inline struct kmem_cache *cache_from_obj(struct kmem_cache *s, void *x)
 {
 	struct kmem_cache *cachep;
 
-	if (!IS_ENABLED(CONFIG_SLAB_FREELIST_HARDENED) &&
-	    !kmem_cache_debug_flags(s, SLAB_CONSISTENCY_CHECKS))
+	if (!IS_ENABLED(CONFIG_SLAB_HARDENED) &&
+			!IS_ENABLED(CONFIG_SLAB_FREELIST_HARDENED) &&
+			!kmem_cache_debug_flags(s, SLAB_CONSISTENCY_CHECKS))
 		return s;
 
 	cachep = virt_to_cache(x);
