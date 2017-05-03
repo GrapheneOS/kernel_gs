@@ -1995,6 +1995,14 @@ config SHUFFLE_PAGE_ALLOCATOR
 
 	  Say Y if unsure.
 
+config SLAB_HARDENED
+	default y
+	depends on SLUB
+	bool "Hardened SLAB infrastructure"
+	help
+          Make minor performance sacrifices to harden the kernel slab
+          allocator.
+
 config SLUB_CPU_PARTIAL
 	default y
 	depends on SLUB && SMP
