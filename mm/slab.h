@@ -591,6 +591,11 @@ static inline void slab_post_alloc_hook(struct kmem_cache *s,
 		p[i] = kasan_slab_alloc(s, p[i], flags, init);
 		if (p[i] && init && !kasan_has_integrated_init())
 			memset(p[i], 0, s->object_size);
+		if (s->ctor) {
+			kasan_unpoison_object_data(s, p[i]);
+			s->ctor(p[i]);
+			kasan_poison_object_data(s, p[i]);
+		}
 		kmemleak_alloc_recursive(p[i], s->object_size, 1,
 					 s->flags, flags);
 	}
@@ -678,8 +683,10 @@ static inline void cache_random_seq_destroy(struct kmem_cache *cachep) { }
 static inline bool slab_want_init_on_alloc(gfp_t flags, struct kmem_cache *c)
 {
 	if (static_branch_unlikely(&init_on_alloc)) {
+#ifndef CONFIG_SLUB
 		if (c->ctor)
 			return false;
+#endif
 		if (c->flags & (SLAB_TYPESAFE_BY_RCU | SLAB_POISON))
 			return flags & __GFP_ZERO;
 		return true;
