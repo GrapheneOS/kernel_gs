@@ -1340,7 +1340,6 @@
   devm_platform_ioremap_resource
 
 # required by virtio_net.ko
-  bpf_dispatcher_xdp_func
   bpf_prog_add
   bpf_prog_put
   bpf_prog_sub
