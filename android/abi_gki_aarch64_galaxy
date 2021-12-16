@@ -766,7 +766,6 @@
   blocking_notifier_chain_register
   blocking_notifier_chain_unregister
   bmap
-  bpf_dispatcher_xdp_func
   bpf_prog_add
   bpf_prog_put
   bpf_prog_sub
