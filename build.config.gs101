@@ -67,8 +67,8 @@ LZ4_RAMDISK=1
 BOOT_IMAGE_HEADER_VERSION=4
 VENDOR_DLKM_MODULES_LIST=${KERNEL_DIR}/vendor_dlkm_modules.slider
 VENDOR_DLKM_PROPS=${KERNEL_DIR}/vendor_dlkm.props.slider
-GKI_RAMDISK_PREBUILT_BINARY=${ROOT_DIR}/prebuilts/boot-artifacts/ramdisks/ramdisk-aosp_arm64.img
-VENDOR_RAMDISK_BINARY=${ROOT_DIR}/prebuilts/boot-artifacts/ramdisks/vendor_ramdisk-oriole.img
+GKI_RAMDISK_PREBUILT_BINARY=${ROOT_DIR}/raviole/prebuilts/boot-artifacts/ramdisks/ramdisk-aosp_arm64.img
+VENDOR_RAMDISK_BINARY=${ROOT_DIR}/raviole/prebuilts/boot-artifacts/ramdisks/vendor_ramdisk-oriole.img
 KERNEL_VENDOR_CMDLINE="earlycon=exynos4210,0x10A00000 console=ttySAC0,115200 androidboot.console=ttySAC0"
 KERNEL_VENDOR_CMDLINE+=" printk.devkmsg=on"
 KERNEL_VENDOR_CMDLINE+=" at24.write_timeout=100 buildvariant=userdebug"
@@ -80,7 +80,7 @@ AVB_BOOT_PARTITION_SIZE=0x04000000
 AVB_BOOT_KEY=${ROOT_DIR}/prebuilts/kernel-build-tools/linux-x86/share/avb/testkey_rsa2048.pem
 AVB_BOOT_ALGORITHM=SHA256_RSA2048
 
-UWB_MODULE="private/google-modules/uwb/kernel"
+UWB_MODULE="raviole/private/google-modules/uwb/kernel"
 if [ -d "${ROOT_DIR}/${UWB_MODULE}" ]; then
 EXT_MODULES+=${UWB_MODULE}
 fi

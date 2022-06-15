@@ -18,7 +18,7 @@ GKI_FILES=(
   modules.builtin.modinfo
   boot-5.10-lz4.img
 )
-GKI_PREBUILTS_DIR=${2:-${CUR_DIR}/prebuilts/boot-artifacts/kernel/}
+GKI_PREBUILTS_DIR=${2:-${CUR_DIR}/raviole/prebuilts/boot-artifacts/kernel/}
 GKI_BUILD=$1
 ALLOW_PREBUILTS_MISMATCH=${ALLOW_PREBUILTS_MISMATCH:-0}
 USE_UNSIGNED_USER_IMG=${USE_UNSIGNED_USER_IMG:-0}

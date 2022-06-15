@@ -8,11 +8,12 @@ function exit_if_error {
   fi
 }
 
+TMPROOT="$(dirname "$(realpath "$0")")"
 EXPERIMENTAL_BUILD=${EXPERIMENTAL_BUILD:-0}
 TRIM_NONLISTED_KMI=${TRIM_NONLISTED_KMI:-1}
 LTO=${LTO:-thin}
 KMI_SYMBOL_LIST_STRICT_MODE=${ENABLE_STRICT_KMI:-1}
-DEFAULT_CONFIG="private/gs-google/build.config.slider"
+DEFAULT_CONFIG="raviole/private/gs-google/build.config.slider"
 DEVICE_KERNEL_BUILD_CONFIG=${DEVICE_KERNEL_BUILD_CONFIG:-${DEFAULT_CONFIG}}
 GKI_KERNEL_PREBUILTS_DIR=
 GKI_KERNEL_BUILD_CONFIG=
@@ -29,15 +30,15 @@ fi
 
 if [ "${BUILD_KERNEL}" = "0" ]; then
   USING_PREBUILTS=1
-  GKI_KERNEL_PREBUILTS_DIR=$(readlink -m "prebuilts/boot-artifacts/kernel/")
+  GKI_KERNEL_PREBUILTS_DIR=$(readlink -m "raviole/prebuilts/boot-artifacts/kernel/")
 else
   USING_PREBUILTS=
   if [ "${EXPERIMENTAL_BUILD}" != "0" ]; then
     GKI_KERNEL_OUT_DIR=android12-5.10-staging
-    GKI_KERNEL_BUILD_CONFIG=common/build.config.gki.aarch64
+    GKI_KERNEL_BUILD_CONFIG=raviole/common/build.config.gki.aarch64
   else
     GKI_KERNEL_OUT_DIR=android12-5.10
-    GKI_KERNEL_BUILD_CONFIG=aosp/build.config.gki.aarch64
+    GKI_KERNEL_BUILD_CONFIG=raviole/aosp/build.config.gki.aarch64
   fi
 fi
 
@@ -78,7 +79,7 @@ DEVICE_KERNEL_BUILD_CONFIG=${DEVICE_KERNEL_BUILD_CONFIG} \
   GKI_KERNEL_OUT_DIR=${GKI_KERNEL_OUT_DIR} \
   GKI_KERNEL_PREBUILTS_DIR=${GKI_KERNEL_PREBUILTS_DIR} \
   GKI_DEFCONFIG_FRAGMENT=${GKI_DEFCONFIG_FRAGMENT} \
-  ./build_mixed.sh "$@"
+  $TMPROOT/build_mixed.sh "$@"
 
 exit_if_error $? "Failed to create mixed build"
 
@@ -94,7 +95,7 @@ if [ "${CHECK_DIRTY_AOSP}" != "0" ]; then
   PREBUILTS_SHA=$(strings ${GKI_KERNEL_PREBUILTS_DIR}/${SHA_FILE} |
                      grep "Linux version 5.10" |
                      sed -n "s/^.*-g\([0-9a-f]\{12\}\)-.*/\1/p")
-  pushd aosp/ > /dev/null
+  pushd "$TMPROOT/../../aosp/" > /dev/null
     # The AOSP sha can sometimes be longer than 12 characters; fix its length.
     AOSP_SHA=$(git log -1 --abbrev=12 --pretty="format:%h")
     if [ "${PREBUILTS_SHA}" != "${AOSP_SHA}" -o -n \
