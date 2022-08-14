@@ -2315,6 +2315,9 @@ arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
 	info.length = len;
 	info.low_limit = max(PAGE_SIZE, mmap_min_addr);
 	info.high_limit = arch_get_mmap_base(addr, mm->mmap_base);
+	if (mm->compat_va_39_bit) {
+		info.high_limit = 1ULL << 39;
+	}
 	info.align_mask = 0;
 	info.align_offset = 0;
 	trace_android_vh_exclude_reserved_zone(mm, &info);
