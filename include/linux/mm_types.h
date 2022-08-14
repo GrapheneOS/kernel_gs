@@ -473,6 +473,9 @@ struct mm_struct {
 #endif
 		int map_count;			/* number of VMAs */
 
+		/* if non-zero, enables workarounds for programs that break when VA_BITS > 39 */
+		int compat_va_39_bit;
+
 		spinlock_t page_table_lock; /* Protects page tables and some
 					     * counters
 					     */
